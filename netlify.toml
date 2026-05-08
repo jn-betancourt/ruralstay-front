@@ -1,0 +1,24 @@
+# Configuración para el despliegue en Netlify
+[build]
+  # Comando para construir el proyecto en modo de producción
+  command = "ng build --configuration=production"
+  
+  # Directorio que Netlify publicará. 
+  # Para Angular, los archivos estáticos se encuentran en 'dist/<nombre-del-proyecto>/browser'
+  publish = "dist/frontend-angular/browser"
+
+# Configuración para el entorno de desarrollo local con 'netlify dev'
+[dev]
+  # Comando para iniciar el servidor de desarrollo de Angular
+  command = "ng serve"
+  # Puerto en el que se ejecutará el servidor de desarrollo
+  port = 4200
+  # Directorio a publicar en el entorno de desarrollo
+  publish = "dist/frontend-angular/browser"
+
+# Reglas de enrutamiento para una Single Page Application (SPA)
+[[redirects]]
+  # Redirige todas las rutas no encontradas al index.html
+  from = "/*"
+  to = "/index.html"
+  status = 200

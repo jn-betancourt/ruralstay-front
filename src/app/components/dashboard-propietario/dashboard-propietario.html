@@ -1,3 +1,4 @@
+<app-navbar></app-navbar>
 <div class="app">
   <aside class="sidebar">
     <div class="profile-block">
@@ -44,10 +45,6 @@
         <div class="topbar-title">{{ panelTitle }}</div>
         <div class="topbar-sub">{{ panelSub }}</div>
       </div>
-
-      <button class="btn-logout" (click)="volverLogin()">
-        Volver al login
-      </button>
     </div>
 
     <div class="content">
@@ -372,23 +369,36 @@
               </div>
 
               <div class="form-field">
+                <label>Ciudad</label>
+                <input [(ngModel)]="casaForm.ciudad">
+              </div>
+
+              <div class="form-field">
+                <label>Precio por noche</label>
+                <input
+                  type="number"
+                  min="0"
+                  [(ngModel)]="casaForm.precio">
+              </div>
+
+              <div class="form-field">
                 <label>Descripción</label>
                 <input [(ngModel)]="casaForm.descripcionGeneral">
               </div>
 
               <div class="form-field">
                 <label>Dormitorios</label>
-                <input type="number" [(ngModel)]="casaForm.numeroDormitorios">
+                <input type="number" min="3" [ngModel]="casaForm.habitaciones.length" (ngModelChange)="actualizarHabitaciones($event)">
               </div>
 
               <div class="form-field">
                 <label>Baños</label>
-                <input type="number" [(ngModel)]="casaForm.numeroBanos">
+                <input type="number" min="2" [ngModel]="casaForm.banos.length" (ngModelChange)="actualizarBanos($event)">
               </div>
 
               <div class="form-field">
                 <label>Cocinas</label>
-                <input type="number" [(ngModel)]="casaForm.numeroCocinas">
+                <input type="number" min="1" [ngModel]="casaForm.cocinas.length" (ngModelChange)="actualizarCocinas($event)">
               </div>
 
               <div class="form-field">

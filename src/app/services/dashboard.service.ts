@@ -5,6 +5,7 @@ import { CasaRuralDto } from '../models/casa-rural-dto';
 import { ReservaDto } from '../models/reserva-dto';
 import { PaqueteAlquilerDto } from '../models/paquete-alquiler-dto';
 import { HistoricoPaqueteDto } from '../models/historico-paquete-dto';
+import { CrearReservaDto } from '../models/crear-reserva-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +13,10 @@ import { HistoricoPaqueteDto } from '../models/historico-paquete-dto';
 export class DashboardService {
   private http = inject(HttpClient);
 
-  private apiCasas = 'https://ruralstay-latest.onrender.com/api/v1/casas';
-  private apiReservas = 'https://ruralstay-latest.onrender.com/api/v1/reservas';
-  private apiPaquetes = 'https://ruralstay-latest.onrender.com/api/v1/paquetes';
+  private apiCasas = 'http://localhost:8080/api/v1/casas';
+  private apiReservas = 'http://localhost:8080/api/v1/reservas';
+  private apiPaquetes = 'http://localhost:8080/api/v1/paquetes';
+  private apiClientes = 'http://localhost:8080/api/v1/clientes';
 
   obtenerCasasPorPropietario(propietarioId: number): Observable<CasaRuralDto[]> {
     return this.http.get<CasaRuralDto[]>(`${this.apiCasas}/propietario/${propietarioId}`);
@@ -79,7 +81,11 @@ export class DashboardService {
     return this.http.post<ReservaDto>(`${this.apiReservas}/actualizar-estado`, reservaDTO);
   }
 
-  private apiUsuarios = 'https://ruralstay-latest.onrender.com/api/v1/usuarios';
+  registrarReserva(payload: CrearReservaDto): Observable<ReservaDto> {
+    return this.http.post<ReservaDto>(`${this.apiClientes}/reservas`, payload);
+  }
+
+  private apiUsuarios = 'http://localhost:8080/api/v1/usuarios';
 
   buscarClientePorUsername(username: string): Observable<any> {
     return this.http.get<any>(`${this.apiUsuarios}/buscar/cliente`, {

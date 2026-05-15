@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { BuscarDisponibilidad } from '../buscar-disponibilidad/buscar-disponibilidad';
@@ -8,19 +7,19 @@ import { DashboardService } from '../../services/dashboard.service';
 import { CasaRuralService } from '../../services/casa-rural.service';
 import { CasaRuralDto } from '../../models/casa-rural-dto';
 import { DetalleCasaDialog } from '../detalle-casa-dialog/detalle-casa-dialog';
+import { Navbar } from '../navbar/navbar';
 import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [CommonModule, BuscarDisponibilidad, MatDialogModule, MatButtonModule],
+  imports: [CommonModule, BuscarDisponibilidad, MatDialogModule, MatButtonModule, Navbar],
   templateUrl: './landing.html',
   styleUrl: './landing.css'
 })
 export class Landing {
   private dashboardService = inject(DashboardService);
   private casaRuralService = inject(CasaRuralService);
-  private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
   private dialog = inject(MatDialog);
 
@@ -29,7 +28,13 @@ export class Landing {
   errorMsg = '';
   busquedaActiva = false;
 
-  onBuscar(params: { fechaEntrada: string; fechaSalida: string }): void {
+  onBuscar(params: {
+    fechaEntrada: string;
+    fechaSalida: string;
+    ciudad?: string;
+    precioMin?: number;
+    precioMax?: number;
+  }): void {
     this.errorMsg = '';
     this.loading = true;
     this.busquedaActiva = true;
@@ -44,7 +49,37 @@ export class Landing {
       .subscribe({
         next: (data) => {
           console.log('Casas disponibles:', data);
-          this.casas = data ?? [];
+
+          let casasFiltradas = data ?? [];
+
+          // Filtrar por ciudad
+          if (params.ciudad && params.ciudad.trim() !== '') {
+
+            casasFiltradas = casasFiltradas.filter(casa =>
+              casa.ciudad?.toLowerCase()
+                .includes(params.ciudad!.toLowerCase())
+            );
+
+          }
+          // Filtrar por precio mínimo
+          if (params.precioMin != null) {
+
+            casasFiltradas = casasFiltradas.filter(casa =>
+              casa.precio >= params.precioMin!
+            );
+
+          }
+          // Filtrar por precio máximo
+          if (params.precioMax != null) {
+
+            casasFiltradas = casasFiltradas.filter(casa =>
+              casa.precio <= params.precioMax!
+            );
+
+          }
+
+          this.casas = casasFiltradas;
+
         },
         error: () => {
           this.errorMsg = 'No se pudo cargar la disponibilidad. Intenta de nuevo.';
@@ -79,4 +114,5 @@ export class Landing {
       }
     });
   }
+
 }

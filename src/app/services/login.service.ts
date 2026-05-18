@@ -9,8 +9,8 @@ import { ClienteDto } from '../models/cliente-dto';
 })
 export class LoginService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/v1/propietarios';
-  private apiClientes = 'http://localhost:8080/api/v1/clientes';
+  private apiUrl = 'https://ruralstay-latest.onrender.com/api/v1/propietarios';
+  private apiClientes = 'https://ruralstay-latest.onrender.com/api/v1/clientes';
 
   loginPropietario(data: PropietarioDto): Observable<PropietarioDto> {
     return this.http.post<PropietarioDto>(`${this.apiUrl}/login-propietario`, data);
@@ -22,5 +22,9 @@ export class LoginService {
 
   registrarPropietario(data: PropietarioDto): Observable<PropietarioDto> {
     return this.http.post<PropietarioDto>(`${this.apiUrl}/registro`, data);
+  }
+
+  registrarCliente(data: ClienteDto): Observable<ClienteDto> {
+    return this.http.post<ClienteDto>(`${this.apiClientes}/registro`, data);
   }
 }

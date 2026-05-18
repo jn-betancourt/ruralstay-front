@@ -10,7 +10,7 @@ import { FiltroCasa } from '../models/filtro-casa';
 })
 export class CasaRuralService {
   private http = inject(HttpClient);
-  private apiCasas = 'http://localhost:8080/api/v1/casas';
+  private apiCasas = 'https://ruralstay-latest.onrender.com/api/v1/casas';
 
   obtenerDetalleCasa(id: number): Observable<CasaDetallDto> {
     return this.http.get<CasaDetallDto>(`${this.apiCasas}/detalle/${id}`);
